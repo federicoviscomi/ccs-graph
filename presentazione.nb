@@ -1,0 +1,2075 @@
+(* Content-type: application/mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 7.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       145,          7]
+NotebookDataLength[     87650,       2066]
+NotebookOptionsPosition[     83634,       1938]
+NotebookOutlinePosition[     84764,       1974]
+CellTagsIndexPosition[     84685,       1969]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Un tool per CCS", "Title",
+ CellChangeTimes->{{3.503206416259081*^9, 3.503206428468276*^9}, {
+  3.503206459862893*^9, 3.503206462669957*^9}, {3.508823646521527*^9, 
+  3.508823652744043*^9}, {3.509102629979326*^9, 3.509102708565589*^9}, {
+  3.509684177966262*^9, 3.509684178763165*^9}},
+ TextAlignment->Center],
+
+Cell["Progetto di Matematica Computazionale", "Subtitle",
+ CellChangeTimes->{{3.503206480315878*^9, 3.50320649004041*^9}, {
+  3.503206584504974*^9, 3.503206613329497*^9}, {3.503206645035895*^9, 
+  3.5032066553858*^9}, {3.503728646811273*^9, 3.503728650695365*^9}, {
+  3.508823661509867*^9, 3.508823670660998*^9}},
+ TextAlignment->Center],
+
+Cell["Federico Viscomi 577326", "Subsubtitle",
+ CellChangeTimes->{{3.503206682820736*^9, 3.50320673045989*^9}, {
+   3.503728618691451*^9, 3.503728619769632*^9}, {3.508823760617544*^9, 
+   3.508823769865567*^9}, 3.509102609189404*^9, 3.509102933433489*^9},
+ TextAlignment->Center]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "SlideShowNavigationBar",
+ CellTags->"SlideShowHeader"],
+
+Cell[CellGroupData[{
+
+Cell["Introduzione", "Section",
+ CellChangeTimes->{{3.508825070439462*^9, 3.5088250882921*^9}, 
+   3.509102745243614*^9, {3.509684183445984*^9, 3.509684185084961*^9}, {
+   3.54935169883318*^9, 3.549351699921756*^9}, {3.552557656096549*^9, 
+   3.552557657563634*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Introduzione", "Subsection",
+ CellChangeTimes->{{3.50882509825588*^9, 3.508825099426576*^9}, 
+   3.509102745245076*^9}],
+
+Cell["\<\
+CCS (Calculus of communicating systems) e' un linguaggio usato per la \
+modellazione e la verifica di sistemi reattivi e distribuiti, ad esempio:
+- sistemi operativi
+- protocolli in generale
+- programmi di controllo di dispositivi con sensori e attuatori
+
+In particolare grazie a ccs siamo in grado di:
+- definire specifiche e implementazioni di sistemi
+- dimostrare l'equivalenza di specifica e implementazione di un certo sistema \
+
+- dimostrare l'equivalenza di sistemi
+- dimostrare certe proprieta' di un sistema specificate ad esempio tramite la \
+logica di Hennessy-Milner
+
+[AIL07] fornisce una descrizione approfondita del CCS.
+
+In questa presentazione esponiamo la sintassi e la semantica del linguaggio \
+CCS e infine mostriamo il contenuto del pacchetto. In particolare questo \
+pacchetto permette di calcolare la semantica di un processo CCS.\
+\>", "Text",
+ CellChangeTimes->{{3.509116310697362*^9, 3.509116314440767*^9}, {
+   3.509269531502997*^9, 3.509269544539252*^9}, {3.509600418601209*^9, 
+   3.509600446700822*^9}, {3.509600483967369*^9, 3.509600485799792*^9}, {
+   3.509600557348962*^9, 3.5096006037639*^9}, {3.509600646633944*^9, 
+   3.509600840353833*^9}, {3.5096841993614*^9, 3.5096842062261*^9}, {
+   3.543826193585747*^9, 3.5438265547743673`*^9}, {3.5438268636571693`*^9, 
+   3.543826889270369*^9}, {3.544003327416812*^9, 3.544003361037033*^9}, {
+   3.5441943939733067`*^9, 3.544194437986865*^9}, {3.549351714313589*^9, 
+   3.549351848255354*^9}, {3.5514281083187313`*^9, 3.551428109027969*^9}, {
+   3.5523703897203407`*^9, 3.55237039645406*^9}, 3.5523705486065474`*^9, {
+   3.55255826549205*^9, 3.55255828116124*^9}, {3.552568790226293*^9, 
+   3.5525688361989803`*^9}, {3.552650630270267*^9, 3.552650631558921*^9}, {
+   3.552714170168069*^9, 3.552714170847224*^9}}]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "SlideShowNavigationBar",
+ CellTags->"SlideShowHeader"],
+
+Cell[CellGroupData[{
+
+Cell["CCS", "Section",
+ CellChangeTimes->{{3.508825070439462*^9, 3.5088250882921*^9}, 
+   3.509102745243614*^9, 3.552556423422862*^9}],
+
+Cell[CellGroupData[{
+
+Cell["Sintassi del CCS", "Subsection",
+ CellChangeTimes->{{3.508825123836318*^9, 3.508825124703488*^9}, 
+   3.509102745247508*^9, {3.54374955101536*^9, 3.543749582365786*^9}, {
+   3.5437497445041103`*^9, 3.543749749258683*^9}, 3.552569643310154*^9}],
+
+Cell[TextData[{
+ "Supponiamo di avere un insieme Input di nomi che chiameremo nomi di input o \
+semplicemente input e un insieme Identifier di nomi che chiameremo \
+identificatori. Se a e\[CloseCurlyQuote] un input allora indichiamo con :a l\
+\[CloseCurlyQuote]output del nome a. Inoltre supponiamo di avere un nome tau \
+che non sta ne in Input ne in Identifier. Definiamo il linguaggio CCS come il \
+piu\[CloseCurlyQuote] piccolo sottoinsieme di stringhe \
+sull\[CloseCurlyQuote]alfabeto:\n\t\t\t(Input \[Union] Identifier \[Union] \
+{.,+,|,/ ,0,:} \[Union] parentesi tonde e quadre)\ntale che\[CloseCurlyQuote]\
+\n- 0 \[Element] CCS\n- Identifier \[SubsetEqual] CCS\n- P \[Element] CCS \
+\[And] a \[Element] Input \[DoubleRightArrow] \n\t\ta.P \[Element] CCS \n\t\t\
+\[And] :a.P \[Element] CCS \n- P \[Element] CCS \[And] {",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["a", "1"], TraditionalForm]]],
+ ", \[Ellipsis],",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["a", "n"], TraditionalForm]]],
+ "} \[SubsetEqual] Input \[DoubleRightArrow]\n\t {",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["a", "1"], TraditionalForm]]],
+ " \[Ellipsis] ",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["a", "n"], TraditionalForm]]],
+ "}/P \[Element] CCS\n- P,Q \[Element] CCS \[DoubleRightArrow] \n\tP+Q \
+\[Element] CCS \n\t\[And] P|Q \[Element] CCS \n- P \[Element] CCS \
+\[DoubleRightArrow]\n\t(P) \[Element] CCS\n\nUsiamo il termine processo per \
+riferirci ad una stringa del linguaggio CCS. Diamo i seguenti nomi agli \
+operatori del CCS:\n + somma\n  | composizione parallela\n  / restrizione \n  \
+. prefisso"
+}], "Text",
+ CellChangeTimes->{{3.509116124955432*^9, 3.509116285706048*^9}, {
+   3.509270714322597*^9, 3.509270780961095*^9}, {3.50927081604431*^9, 
+   3.509271389308259*^9}, {3.509271449424228*^9, 3.509271504644167*^9}, {
+   3.5092723470824*^9, 3.509272367282705*^9}, {3.509272409936979*^9, 
+   3.509272635487762*^9}, {3.509272682374904*^9, 3.509272877192402*^9}, {
+   3.509272943332178*^9, 3.509273000742701*^9}, {3.509273043026291*^9, 
+   3.509273136667056*^9}, {3.509356592349172*^9, 3.509356605928101*^9}, {
+   3.509600137035553*^9, 3.509600202577768*^9}, {3.5437495880705233`*^9, 
+   3.5437497269066668`*^9}, {3.543826597746583*^9, 3.543826825404779*^9}, {
+   3.543826901994948*^9, 3.5438269270441008`*^9}, {3.543826960240247*^9, 
+   3.5438270380747423`*^9}, {3.5438598113130903`*^9, 3.543860309098177*^9}, {
+   3.544081335989566*^9, 3.5440813525005693`*^9}, {3.544261097353941*^9, 
+   3.544261097938787*^9}, 3.5514253135621*^9, {3.552372160700448*^9, 
+   3.552372162766663*^9}, {3.5523722581155148`*^9, 3.552372262550571*^9}, {
+   3.5523723537699623`*^9, 3.552372354914324*^9}, {3.552372406262135*^9, 
+   3.552372439054935*^9}, {3.552372475868866*^9, 3.552372476542197*^9}, {
+   3.552372520908778*^9, 3.552372527715541*^9}, {3.5525564408401127`*^9, 
+   3.5525564529308243`*^9}, {3.5525564867759857`*^9, 3.552556555760359*^9}, {
+   3.55255659139465*^9, 3.5525566252071533`*^9}, {3.552556686218856*^9, 
+   3.55255668811447*^9}, {3.552556723210813*^9, 3.552556781224749*^9}, {
+   3.55255689991648*^9, 3.5525570990295143`*^9}, {3.5525575944768248`*^9, 
+   3.552557598070445*^9}, {3.552557678408798*^9, 3.552557788511217*^9}, {
+   3.552557849272986*^9, 3.552558039767097*^9}, {3.552558071627183*^9, 
+   3.55255807281754*^9}, {3.552558197371422*^9, 3.5525581994383717`*^9}, {
+   3.552558239636313*^9, 3.5525582413160477`*^9}, {3.552558672873809*^9, 
+   3.5525586872979717`*^9}, {3.552558717333888*^9, 3.552558775458222*^9}, {
+   3.552558815594777*^9, 3.55255883560928*^9}, {3.552559224696601*^9, 
+   3.552559228849691*^9}, {3.552559272631885*^9, 3.552559274697989*^9}, {
+   3.552559313442822*^9, 3.5525593407948637`*^9}, 3.55256004921671*^9, {
+   3.5525610055045233`*^9, 3.5525610923970747`*^9}, {3.552561855536203*^9, 
+   3.552561861758263*^9}, {3.5525643468688107`*^9, 3.5525643642899017`*^9}, {
+   3.552564398942815*^9, 3.5525644595098143`*^9}, {3.552564494978735*^9, 
+   3.5525645488644037`*^9}, {3.5525682330132504`*^9, 3.552568235919198*^9}, {
+   3.552568267381226*^9, 3.552568333771655*^9}, {3.552568614969256*^9, 
+   3.5525686586136723`*^9}, {3.552569549643034*^9, 3.552569561103381*^9}, {
+   3.552569591386891*^9, 3.552569594588867*^9}, {3.552569655689562*^9, 
+   3.552569656656911*^9}, {3.552569990122222*^9, 3.552570046611876*^9}, {
+   3.552570381753162*^9, 3.552570391994547*^9}, {3.552570879564589*^9, 
+   3.552570952149254*^9}, {3.5525709858742733`*^9, 3.5525710853064137`*^9}, {
+   3.5526501608041487`*^9, 3.552650176897826*^9}, {3.5526506731001997`*^9, 
+   3.5526506931123533`*^9}, {3.5526684887746563`*^9, 
+   3.5526684921796227`*^9}, {3.552714194713546*^9, 3.552714202648259*^9}, {
+   3.5527299536403437`*^9, 3.5527300195401*^9}, {3.552733624553376*^9, 
+   3.552733658892283*^9}, {3.552733731081419*^9, 3.552733747665461*^9}, {
+   3.552735130078623*^9, 3.5527351417170963`*^9}, {3.554298479067093*^9, 
+   3.5542985420966167`*^9}}],
+
+Cell["\<\
+
+Una definizione di un identificatore e\[CloseCurlyQuote] 
+\t\t\t\t\tA = P
+dove A e\[CloseCurlyQuote] un identificatore e P e\[CloseCurlyQuote] un \
+processo CCS.
+
+Gli operatori di composizione parallela e di somma hanno entrambi \
+associtivita\[CloseCurlyQuote] a sinistra ma l\[CloseCurlyQuote]operatore di \
+composizione parallela ha priorita\[CloseCurlyQuote] piu\[CloseCurlyQuote] \
+alta rispetto a quello di somma. Quindi ad esempio il processo 
+\t\t\t\t\ta.0 + b.0 | c.0
+e\[CloseCurlyQuote] uguale a
+\t\t\t\t\ta.0 + (b.0 | c.0)\t\t\t\t\
+\>", "Text",
+ CellChangeTimes->{
+  3.552559250376622*^9, 3.552560998133395*^9, {3.5525611349209757`*^9, 
+   3.552561143769706*^9}, {3.552562426422961*^9, 3.552562430598673*^9}, {
+   3.5525694771644506`*^9, 3.552569524389225*^9}, {3.552569667574067*^9, 
+   3.552569687184188*^9}, {3.5525698222831707`*^9, 3.5525698342994127`*^9}, {
+   3.5525698968159103`*^9, 3.5525698979710283`*^9}, {3.5525700586317797`*^9, 
+   3.552570059824648*^9}, {3.552571034654767*^9, 3.552571036566758*^9}, {
+   3.5526507388826036`*^9, 3.552650768168347*^9}, {3.55273381035717*^9, 
+   3.552733847725532*^9}, {3.55431378820966*^9, 3.554313893204277*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Semantica formale del CCS ed esempi di uso del package", "Subsection",
+ CellChangeTimes->{{3.50882514080769*^9, 3.508825141863043*^9}, 
+   3.509102745256991*^9, {3.544001621333946*^9, 3.5440016246637*^9}, {
+   3.551425635022386*^9, 3.5514256362111893`*^9}, {3.5525594861639433`*^9, 
+   3.552559486537121*^9}, {3.552568710044829*^9, 3.552568710681864*^9}, {
+   3.552729076101963*^9, 3.552729081602126*^9}}],
+
+Cell[TextData[{
+ "\nLa semantica di un processo P \[Element] CCS e\[CloseCurlyQuote] un grafo \
+diretto etichettato cioe\[CloseCurlyQuote] un grafo diretto e una funzione \
+che associa stringhe ai suoi vertici. Rappresentiamo un grafo etichettato \
+come {N, E} dove \n- N e\[CloseCurlyQuote] l\[CloseCurlyQuote]insieme dei \
+nodi. I nodi in questo caso sono processi CCS.\n- E e\[CloseCurlyQuote] l\
+\[CloseCurlyQuote]insieme degli archi etichettati. Un elemento di E e\
+\[CloseCurlyQuote] una tripla:\n\t\t\t(nodo di partenza, etichetta dell\
+\[CloseCurlyQuote]arco, nodo di arrivo).\n se (P,a,Q) \[Element] E allora \
+scriviamo P ",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", "a"]]],
+ " Q ",
+ " \[Element] E",
+ "\n  \nL\[CloseCurlyQuote]etichetta di un arco puo\[CloseCurlyQuote] essere \
+un input, un output oppure tau. Di seguito indichiamo con le prime lettere \
+dell\[CloseCurlyQuote]alfabeto in minuscolo a,b,c... un elemento di Input, \
+con P e Q due processi CCS, mentre con label indichiamo: un elemento di \
+Input, un output oppure tau. Diciamo che un processo fa \
+un\[CloseCurlyQuote]azione quando: prende un nome in input, da un nome in \
+output, fa l\[CloseCurlyQuote]azione tau. La semantica di un processo CCS e\
+\[CloseCurlyQuote] definita per induzione strutturale nel modo seguente:\n"
+}], "Text",
+ CellChangeTimes->{{3.509116328336355*^9, 3.509116330285952*^9}, {
+   3.509273397206753*^9, 3.50927341166843*^9}, {3.509274336528221*^9, 
+   3.509274406450884*^9}, {3.509274708949332*^9, 3.509274804360965*^9}, {
+   3.509274918706321*^9, 3.509274948694547*^9}, {3.509275024564179*^9, 
+   3.509275088402329*^9}, {3.509275188517689*^9, 3.509275196790348*^9}, {
+   3.509275275327711*^9, 3.509275284435144*^9}, {3.509275341010926*^9, 
+   3.509275688217678*^9}, {3.509280262245836*^9, 3.509280336606181*^9}, {
+   3.509304045305133*^9, 3.509304084563693*^9}, {3.509356189345603*^9, 
+   3.509356198943424*^9}, {3.509356312143092*^9, 3.509356352385805*^9}, {
+   3.509356650876289*^9, 3.509356873666138*^9}, {3.50935700243924*^9, 
+   3.509357017434972*^9}, {3.509464391050188*^9, 3.509464424755067*^9}, {
+   3.509600267984768*^9, 3.50960026827413*^9}, {3.509600325919825*^9, 
+   3.509600349149512*^9}, {3.509600872893419*^9, 3.509601188607261*^9}, {
+   3.543505457841951*^9, 3.5435054593466473`*^9}, {3.543598016854055*^9, 
+   3.5435980172166758`*^9}, {3.543749832581621*^9, 3.543749839286786*^9}, {
+   3.5437498782840977`*^9, 3.543749879685952*^9}, {3.543750222976013*^9, 
+   3.5437502602473307`*^9}, {3.544002802521365*^9, 3.544002861318288*^9}, {
+   3.5440029621058702`*^9, 3.5440029679644814`*^9}, {3.5440032229632397`*^9, 
+   3.5440032239807997`*^9}, {3.544081474903027*^9, 3.5440814909413023`*^9}, {
+   3.5440859947121468`*^9, 3.5440860849895897`*^9}, {3.54409153279003*^9, 
+   3.544091535719471*^9}, {3.5442609401364803`*^9, 3.544260950419244*^9}, {
+   3.54426112941501*^9, 3.544261138445496*^9}, {3.55134324374323*^9, 
+   3.551343244737967*^9}, {3.551425702969535*^9, 3.5514257058885803`*^9}, {
+   3.551427540739957*^9, 3.551427569721986*^9}, {3.5525594172624397`*^9, 
+   3.552559577213431*^9}, {3.552559663303379*^9, 3.552559939543373*^9}, {
+   3.552560118587036*^9, 3.5525603159007263`*^9}, {3.552560377229787*^9, 
+   3.552560426604733*^9}, {3.552560474580161*^9, 3.5525605200190783`*^9}, {
+   3.5525605561718073`*^9, 3.552560704545168*^9}, 3.552560753137768*^9, {
+   3.55256089040876*^9, 3.552560979597576*^9}, {3.552561228731258*^9, 
+   3.552561321851061*^9}, {3.552561360804282*^9, 3.552561606618314*^9}, {
+   3.552561650307198*^9, 3.552561668570632*^9}, {3.552561733401787*^9, 
+   3.552561744863253*^9}, {3.552561802300769*^9, 3.552561845986232*^9}, {
+   3.552561889944227*^9, 3.552562023607168*^9}, {3.552562062153496*^9, 
+   3.55256215520282*^9}, {3.5525621940597143`*^9, 3.5525622742189093`*^9}, {
+   3.5525623275363617`*^9, 3.552562344864744*^9}, {3.5525638018042803`*^9, 
+   3.552563834520501*^9}, {3.5525639328045692`*^9, 3.552563941757175*^9}, 
+   3.552564593127771*^9, 3.5525689184125843`*^9, {3.552568951957008*^9, 
+   3.552569032509974*^9}, {3.552569377245612*^9, 3.5525694490836763`*^9}, {
+   3.552569567588036*^9, 3.55256958112317*^9}, {3.5525696174765587`*^9, 
+   3.552569633990307*^9}, {3.552569698786003*^9, 3.5525697964428263`*^9}, {
+   3.552569843632655*^9, 3.552569976666706*^9}, {3.55257007596502*^9, 
+   3.552570087773535*^9}, 3.552570126041072*^9, {3.5525701647200327`*^9, 
+   3.5525703717180157`*^9}, {3.552570406382156*^9, 3.552570446427359*^9}, {
+   3.552570495007881*^9, 3.55257049730228*^9}, {3.552570560048038*^9, 
+   3.5525708680433598`*^9}, {3.552571118078499*^9, 3.552571210464645*^9}, {
+   3.552571245430179*^9, 3.552571534551209*^9}, {3.5525715688162403`*^9, 
+   3.552571593358574*^9}, {3.552571661137023*^9, 3.552571673571967*^9}, {
+   3.552571706169363*^9, 3.552571798466313*^9}, {3.552571831895783*^9, 
+   3.552571900803298*^9}, {3.5525719397230463`*^9, 3.552571949219411*^9}, {
+   3.5525719809678373`*^9, 3.5525721510393248`*^9}, {3.5525721826813993`*^9, 
+   3.552572264262929*^9}, {3.552572335210393*^9, 3.552572481091826*^9}, {
+   3.552572559172633*^9, 3.552572640882613*^9}, {3.552572740017028*^9, 
+   3.552572758694912*^9}, {3.552650211475918*^9, 3.5526504453736486`*^9}, {
+   3.55265078302302*^9, 3.552650786030902*^9}, {3.5526508302187967`*^9, 
+   3.552650837760441*^9}, {3.552650981542079*^9, 3.5526509899506083`*^9}, {
+   3.552651028308127*^9, 3.5526510285918093`*^9}, {3.552651070504078*^9, 
+   3.552651091722208*^9}, 3.552668186369615*^9, {3.5526688521652117`*^9, 
+   3.5526688560949297`*^9}, {3.552669292012361*^9, 3.5526692931120253`*^9}, {
+   3.5526694221413193`*^9, 3.55266944347406*^9}, {3.55266952454725*^9, 
+   3.55266959152411*^9}, {3.55271428629152*^9, 3.5527143020970984`*^9}, {
+   3.552714385961553*^9, 3.552714389373423*^9}, {3.552714709801688*^9, 
+   3.5527148022088957`*^9}, {3.552733864413362*^9, 3.552733914776823*^9}, {
+   3.5527351120535707`*^9, 3.5527351182647467`*^9}, {3.55273515008926*^9, 
+   3.552735182071958*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+la semantica del processo 0 e\[CloseCurlyQuote] il grafo 
+\t\t\t\t\t{{0},\[Phi]}
+rappresenta il processo terminato o nullo, cioe\[CloseCurlyQuote] il processo \
+che non puo\[CloseCurlyQuote] agire. 
+\
+\>", "Item",
+ CellChangeTimes->{3.552714803193054*^9}],
+
+Cell[TextData[{
+ " la semantica del processo a.P e\[CloseCurlyQuote] il grafo \n\t\t\t\t\
+{{(a.P)} \[Union] N , {a.P ",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", "a"]]],
+ " P} \[Union] E} \ndove {N,E} e\[CloseCurlyQuote] la semantica del processo \
+P. Ad esempio la semantica di a.0 e\[CloseCurlyQuote] il grafo seguente"
+}], "Item",
+ CellChangeTimes->{{3.552714796884231*^9, 3.552714798461967*^9}, {
+  3.552729142995434*^9, 3.552729156079567*^9}, {3.554299022499971*^9, 
+  3.554299031569386*^9}}]
+}, Open  ]],
+
+Cell[BoxData[
+ GraphicsBox[
+  TagBox[GraphicsComplexBox[{{1., 0.}, {0., 8.979318433952318*^-11}}, {
+     {RGBColor[0.5, 0., 0.], Arrowheads[{{0.041582132564841494`, 0.7}}], 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\"a\"", 
+                 StringForm["``", "a"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.041582132564841494`, 0.8}}], 
+       ArrowBox[{1, 2}]}}, {
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          InterpretationBox["\<\"\\!\\(TraditionalForm\\`\\\"a\\\"\\).0\"\>",
+           StringForm["``.``", 
+            StringForm["``", "a"], "0"],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 1],
+        InterpretationBox["\"\\!\\(\\\"a\\\"\\).0\"", 
+         StringForm["``.``", 
+          StringForm["``", "a"], "0"], Editable -> False]],
+       Annotation[#, 
+        StringForm["``.``", 
+         StringForm["``", "a"], "0"], "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox["\<\"0\"\>",
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 2],
+        "\"0\"",
+        TooltipStyle->"TextStyling"],
+       Annotation[#, "0", "Tooltip"]& ]}}],
+   Annotation[#, 
+    VertexCoordinateRules -> {{1., 0.}, {0., 8.979318433952318*^-11}}]& ],
+  AspectRatio->Automatic,
+  FrameTicks->None,
+  PlotRange->All,
+  PlotRangePadding->Scaled[0.1]]], "Output",
+ CellChangeTimes->{3.552729135875379*^9}],
+
+Cell["\<\
+dalla semantica si nota che il processo a.0 puo\[CloseCurlyQuote] prendere in \
+input a e poi terminare. 
+\
+\>", "Text",
+ CellChangeTimes->{{3.5527291682399197`*^9, 3.552729170060329*^9}, {
+  3.5542990415983143`*^9, 3.554299042457378*^9}}],
+
+Cell[TextData[{
+ "la semantica del processo :a.P e\[CloseCurlyQuote] il grafo \n\t\t\t\t\
+{{:a.P} \[Union] N , {:a.P ",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", 
+   RowBox[{":", "a"}]]]],
+ " P} \[Union] E} \ndove {N,E} e\[CloseCurlyQuote] la semantica del processo \
+P. Ad esempio la semantica di :a.0 e\[CloseCurlyQuote] il grafo seguente "
+}], "Item",
+ CellChangeTimes->{
+  3.5527147703074102`*^9, {3.552729196000524*^9, 3.552729205646563*^9}, {
+   3.554299045308651*^9, 3.554299055197394*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[
+  TagBox[GraphicsComplexBox[{{1., 0.}, {0., 8.979318433952318*^-11}}, {
+     {RGBColor[0.5, 0., 0.], Arrowheads[{{0.041582132564841494`, 0.7}}], 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\":a\"", 
+                 StringForm[":``", "a"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.041582132564841494`, 0.8}}], 
+       ArrowBox[{1, 2}]}}, {
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          
+          InterpretationBox["\<\"\\!\\(TraditionalForm\\`\\\":a\\\"\\).0\"\>",
+           
+           StringForm["``.``", 
+            StringForm[":``", "a"], "0"],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 1],
+        InterpretationBox["\"\\!\\(\\\":a\\\"\\).0\"", 
+         StringForm["``.``", 
+          StringForm[":``", "a"], "0"], Editable -> False]],
+       Annotation[#, 
+        StringForm["``.``", 
+         StringForm[":``", "a"], "0"], "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox["\<\"0\"\>",
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 2],
+        "\"0\"",
+        TooltipStyle->"TextStyling"],
+       Annotation[#, "0", "Tooltip"]& ]}}],
+   Annotation[#, 
+    VertexCoordinateRules -> {{1., 0.}, {0., 8.979318433952318*^-11}}]& ],
+  AspectRatio->Automatic,
+  FrameTicks->None,
+  PlotRange->All,
+  PlotRangePadding->Scaled[0.1]]], "Output",
+ CellChangeTimes->{3.552729193149776*^9}],
+
+Cell["\<\
+tale processo puo\[CloseCurlyQuote] produrre a come output ed arrivare in 0. 
+\
+\>", "Text",
+ CellChangeTimes->{3.552729212791453*^9}],
+
+Cell[TextData[{
+ "la semantica del processo P+Q e\[CloseCurlyQuote] il grafo\n \t{({P+Q} \
+\[Union] N \[Union] M) - {P,Q} , \n \t\t{P+Q",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", "label"]]],
+ "R, dove P",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", "label"]]],
+ "R \[Element] E}\n \t\t\[Union] {P+Q",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", "label"]]],
+ "R dove Q",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", "label"]]],
+ "R \[Element] F}\n  \t\t\[Union] {(start, label, end)\[Element]E tale che \
+start e\[CloseCurlyQuote] diverso da P}\n  \t\t\[Union] {(start, label, end)\
+\[Element]F tale che start e\[CloseCurlyQuote] diverso da Q}}\ndove {N,E} e\
+\[CloseCurlyQuote] la semantica del processo P e {M,F} e\[CloseCurlyQuote] la \
+semantica del processo Q. La somma di processi serve per rappresentare il non \
+determinismo. In altre parole il processo P+Q si puo\[CloseCurlyQuote] \
+comportare o come P o come Q. Ad esempio la semantica di a.b.0 + c.d.0 e\
+\[CloseCurlyQuote] il grafo seguente"
+}], "Item",
+ CellChangeTimes->{{3.5527147531119547`*^9, 3.5527147554258547`*^9}, {
+  3.552729247174429*^9, 3.552729257346407*^9}, {3.554299059744083*^9, 
+  3.554299140301343*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[
+  TagBox[GraphicsComplexBox[{{0., 0.029945404196222936`}, {
+    1.0000906201270983`, 0.}, {0.031128233665176586`, 1.0299964287193093`}, {
+    1.0300507240971837`, 0.999075137178996}}, {
+     {RGBColor[0.5, 0., 0.], Arrowheads[{{0.041285217403800124`, 0.7}}], 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\"a\"", 
+                 StringForm["``", "a"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.041285217403800124`, 0.8}}], 
+       ArrowBox[{1, 2}]}, 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\"c\"", 
+                 StringForm["``", "c"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.041285217403800124`, 0.8}}], 
+       ArrowBox[{1, 3}]}, 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\"b\"", 
+                 StringForm["``", "b"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.041285217403800124`, 0.8}}], 
+       ArrowBox[{2, 4}]}, 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\"d\"", 
+                 StringForm["``", "d"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.041285217403800124`, 0.8}}], 
+       ArrowBox[{3, 4}]}}, {
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          
+          InterpretationBox["\<\"(\\!\\(TraditionalForm\\`\\\"\\\\!\\\\(\
+TraditionalForm\\\\`\\\\\\\"a\\\\\\\"\\\\).\\\\!\\\\(TraditionalForm\\\\`\\\\\
+\\\"\\\\\\\\!\\\\\\\\(TraditionalForm\\\\\\\\`\\\\\\\\\\\\\\\"b\\\\\\\\\\\\\\\
+\"\\\\\\\\).0\\\\\\\"\\\\)\\\"\\) + \
+\\!\\(TraditionalForm\\`\\\"\\\\!\\\\(TraditionalForm\\\\`\\\\\\\"c\\\\\\\"\\\
+\\).\\\\!\\\\(TraditionalForm\\\\`\\\\\\\"\\\\\\\\!\\\\\\\\(TraditionalForm\\\
+\\\\\\`\\\\\\\\\\\\\\\"d\\\\\\\\\\\\\\\"\\\\\\\\).0\\\\\\\"\\\\)\\\"\\))\"\>",
+           
+           StringForm["(`` + ``)", 
+            StringForm["``.``", 
+             StringForm["``", "a"], 
+             StringForm["``.``", 
+              StringForm["``", "b"], "0"]], 
+            StringForm["``.``", 
+             StringForm["``", "c"], 
+             StringForm["``.``", 
+              StringForm["``", "d"], "0"]]],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 1],
+        InterpretationBox[
+        "\"(\\!\\(\\\"\\\\!\\\\(\\\\\\\"a\\\\\\\"\\\\).\\\\!\\\\(\\\\\\\"\\\\\
+\\\\!\\\\\\\\(\\\\\\\\\\\\\\\"b\\\\\\\\\\\\\\\"\\\\\\\\).0\\\\\\\"\\\\)\\\"\\)\
+ + \\!\\(\\\"\\\\!\\\\(\\\\\\\"c\\\\\\\"\\\\).\\\\!\\\\(\\\\\\\"\\\\\\\\!\\\\\
+\\\\(\\\\\\\\\\\\\\\"d\\\\\\\\\\\\\\\"\\\\\\\\).0\\\\\\\"\\\\)\\\"\\))\"", 
+         StringForm["(`` + ``)", 
+          StringForm["``.``", 
+           StringForm["``", "a"], 
+           StringForm["``.``", 
+            StringForm["``", "b"], "0"]], 
+          StringForm["``.``", 
+           StringForm["``", "c"], 
+           StringForm["``.``", 
+            StringForm["``", "d"], "0"]]], Editable -> False]],
+       Annotation[#, 
+        StringForm["(`` + ``)", 
+         StringForm["``.``", 
+          StringForm["``", "a"], 
+          StringForm["``.``", 
+           StringForm["``", "b"], "0"]], 
+         StringForm["``.``", 
+          StringForm["``", "c"], 
+          StringForm["``.``", 
+           StringForm["``", "d"], "0"]]], "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          InterpretationBox["\<\"\\!\\(TraditionalForm\\`\\\"b\\\"\\).0\"\>",
+           StringForm["``.``", 
+            StringForm["``", "b"], "0"],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 2],
+        InterpretationBox["\"\\!\\(\\\"b\\\"\\).0\"", 
+         StringForm["``.``", 
+          StringForm["``", "b"], "0"], Editable -> False]],
+       Annotation[#, 
+        StringForm["``.``", 
+         StringForm["``", "b"], "0"], "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          InterpretationBox["\<\"\\!\\(TraditionalForm\\`\\\"d\\\"\\).0\"\>",
+           StringForm["``.``", 
+            StringForm["``", "d"], "0"],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 3],
+        InterpretationBox["\"\\!\\(\\\"d\\\"\\).0\"", 
+         StringForm["``.``", 
+          StringForm["``", "d"], "0"], Editable -> False]],
+       Annotation[#, 
+        StringForm["``.``", 
+         StringForm["``", "d"], "0"], "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox["\<\"0\"\>",
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 4],
+        "\"0\"",
+        TooltipStyle->"TextStyling"],
+       Annotation[#, "0", "Tooltip"]& ]}}],
+   Annotation[#, 
+    VertexCoordinateRules -> {{0., 0.029945404196222936`}, {
+     1.0000906201270983`, 0.}, {0.031128233665176586`, 1.0299964287193093`}, {
+     1.0300507240971837`, 0.999075137178996}}]& ],
+  AspectRatio->Automatic,
+  FrameTicks->None,
+  PlotRange->All,
+  PlotRangePadding->Scaled[0.1]]], "Output",
+ CellChangeTimes->{3.5527292797393227`*^9}],
+
+Cell[TextData[{
+ "la semantica del processo P|Q e\[CloseCurlyQuote] il grafo\n\t{{R|S, dove R\
+\[Element] N e S \[Element] M}, \n\t\t{R|T",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", "label"]]],
+ "S|T, dove R",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", "label"]]],
+ "S \[Element] E e T \[Element] M} \n\t\t\[Union] {T|R",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", "label"]]],
+ "T|S, dove R",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", "label"]]],
+ "S \[Element] F e T \[Element] N}}\ndove {N,E} e\[CloseCurlyQuote] la \
+semantica del processo P e {M,F} e\[CloseCurlyQuote] la semantica del \
+processo Q. P|Q modella il caso in cui i due processi P e Q agiscono in modo \
+indipendente.  Ad esempio la semantica di a.0 | b.c.0 e\[CloseCurlyQuote] il \
+grafo seguente"
+}], "Item",
+ CellChangeTimes->{{3.552714743515126*^9, 3.552714745897746*^9}, {
+  3.5527292983676157`*^9, 3.552729304646336*^9}, {3.552734009044964*^9, 
+  3.552734011415181*^9}, {3.554299167713139*^9, 3.554299243403817*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[
+  TagBox[GraphicsComplexBox[{{2.1040042858004147`, 0.932668771838491}, {
+    2.104280698167112, 0.02115277161511092}, {1.052066791160055, 
+    0.9540467452689065}, {1.0524668639458703`, 0.}, {0., 
+    0.9324738483887802}, {0.0007475781271284454, 0.020722511526360066`}}, {
+     {RGBColor[0.5, 0., 0.], Arrowheads[{{0.033233632765056004`, 0.7}}], 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\"a\"", 
+                 StringForm["``", "a"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.033233632765056004`, 0.8}}], 
+       ArrowBox[{1, 2}]}, 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\"b\"", 
+                 StringForm["``", "b"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.033233632765056004`, 0.8}}], 
+       ArrowBox[{1, 3}]}, 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\"b\"", 
+                 StringForm["``", "b"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.033233632765056004`, 0.8}}], 
+       ArrowBox[{2, 4}]}, 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\"a\"", 
+                 StringForm["``", "a"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.033233632765056004`, 0.8}}], 
+       ArrowBox[{3, 4}]}, 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\"c\"", 
+                 StringForm["``", "c"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.033233632765056004`, 0.8}}], 
+       ArrowBox[{3, 5}]}, 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\"c\"", 
+                 StringForm["``", "c"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.033233632765056004`, 0.8}}], 
+       ArrowBox[{4, 6}]}, 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\"a\"", 
+                 StringForm["``", "a"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.033233632765056004`, 0.8}}], 
+       ArrowBox[{5, 6}]}}, {
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          
+          InterpretationBox["\<\"(\\!\\(TraditionalForm\\`\\\"\\\\!\\\\(\
+TraditionalForm\\\\`\\\\\\\"a\\\\\\\"\\\\).0\\\"\\) | \
+\\!\\(TraditionalForm\\`\\\"\\\\!\\\\(TraditionalForm\\\\`\\\\\\\"b\\\\\\\"\\\
+\\).\\\\!\\\\(TraditionalForm\\\\`\\\\\\\"\\\\\\\\!\\\\\\\\(TraditionalForm\\\
+\\\\\\`\\\\\\\\\\\\\\\"c\\\\\\\\\\\\\\\"\\\\\\\\).0\\\\\\\"\\\\)\\\"\\))\"\>",
+           
+           StringForm["(`` | ``)", 
+            StringForm["``.``", 
+             StringForm["``", "a"], "0"], 
+            StringForm["``.``", 
+             StringForm["``", "b"], 
+             StringForm["``.``", 
+              StringForm["``", "c"], "0"]]],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 1],
+        InterpretationBox[
+        "\"(\\!\\(\\\"\\\\!\\\\(\\\\\\\"a\\\\\\\"\\\\).0\\\"\\) | \
+\\!\\(\\\"\\\\!\\\\(\\\\\\\"b\\\\\\\"\\\\).\\\\!\\\\(\\\\\\\"\\\\\\\\!\\\\\\\\\
+(\\\\\\\\\\\\\\\"c\\\\\\\\\\\\\\\"\\\\\\\\).0\\\\\\\"\\\\)\\\"\\))\"", 
+         StringForm["(`` | ``)", 
+          StringForm["``.``", 
+           StringForm["``", "a"], "0"], 
+          StringForm["``.``", 
+           StringForm["``", "b"], 
+           StringForm["``.``", 
+            StringForm["``", "c"], "0"]]], Editable -> False]],
+       Annotation[#, 
+        StringForm["(`` | ``)", 
+         StringForm["``.``", 
+          StringForm["``", "a"], "0"], 
+         StringForm["``.``", 
+          StringForm["``", "b"], 
+          StringForm["``.``", 
+           StringForm["``", "c"], "0"]]], "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          
+          InterpretationBox["\<\"(0 | \
+\\!\\(TraditionalForm\\`\\\"\\\\!\\\\(TraditionalForm\\\\`\\\\\\\"b\\\\\\\"\\\
+\\).\\\\!\\\\(TraditionalForm\\\\`\\\\\\\"\\\\\\\\!\\\\\\\\(TraditionalForm\\\
+\\\\\\`\\\\\\\\\\\\\\\"c\\\\\\\\\\\\\\\"\\\\\\\\).0\\\\\\\"\\\\)\\\"\\))\"\>",
+           
+           StringForm["(`` | ``)", "0", 
+            StringForm["``.``", 
+             StringForm["``", "b"], 
+             StringForm["``.``", 
+              StringForm["``", "c"], "0"]]],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 2],
+        InterpretationBox[
+        "\"(0 | \\!\\(\\\"\\\\!\\\\(\\\\\\\"b\\\\\\\"\\\\).\\\\!\\\\(\\\\\\\"\
+\\\\\\\\!\\\\\\\\(\\\\\\\\\\\\\\\"c\\\\\\\\\\\\\\\"\\\\\\\\).0\\\\\\\"\\\\)\\\
+\"\\))\"", 
+         StringForm["(`` | ``)", "0", 
+          StringForm["``.``", 
+           StringForm["``", "b"], 
+           StringForm["``.``", 
+            StringForm["``", "c"], "0"]]], Editable -> False]],
+       Annotation[#, 
+        StringForm["(`` | ``)", "0", 
+         StringForm["``.``", 
+          StringForm["``", "b"], 
+          StringForm["``.``", 
+           StringForm["``", "c"], "0"]]], "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          
+          InterpretationBox["\<\"(\\!\\(TraditionalForm\\`\\\"\\\\!\\\\(\
+TraditionalForm\\\\`\\\\\\\"a\\\\\\\"\\\\).0\\\"\\) | \
+\\!\\(TraditionalForm\\`\\\"\\\\!\\\\(TraditionalForm\\\\`\\\\\\\"c\\\\\\\"\\\
+\\).0\\\"\\))\"\>",
+           StringForm["(`` | ``)", 
+            StringForm["``.``", 
+             StringForm["``", "a"], "0"], 
+            StringForm["``.``", 
+             StringForm["``", "c"], "0"]],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 3],
+        InterpretationBox[
+        "\"(\\!\\(\\\"\\\\!\\\\(\\\\\\\"a\\\\\\\"\\\\).0\\\"\\) | \
+\\!\\(\\\"\\\\!\\\\(\\\\\\\"c\\\\\\\"\\\\).0\\\"\\))\"", 
+         StringForm["(`` | ``)", 
+          StringForm["``.``", 
+           StringForm["``", "a"], "0"], 
+          StringForm["``.``", 
+           StringForm["``", "c"], "0"]], Editable -> False]],
+       Annotation[#, 
+        StringForm["(`` | ``)", 
+         StringForm["``.``", 
+          StringForm["``", "a"], "0"], 
+         StringForm["``.``", 
+          StringForm["``", "c"], "0"]], "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          
+          InterpretationBox["\<\"(0 | \
+\\!\\(TraditionalForm\\`\\\"\\\\!\\\\(TraditionalForm\\\\`\\\\\\\"c\\\\\\\"\\\
+\\).0\\\"\\))\"\>",
+           StringForm["(`` | ``)", "0", 
+            StringForm["``.``", 
+             StringForm["``", "c"], "0"]],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 4],
+        InterpretationBox[
+        "\"(0 | \\!\\(\\\"\\\\!\\\\(\\\\\\\"c\\\\\\\"\\\\).0\\\"\\))\"", 
+         StringForm["(`` | ``)", "0", 
+          StringForm["``.``", 
+           StringForm["``", "c"], "0"]], Editable -> False]],
+       Annotation[#, 
+        StringForm["(`` | ``)", "0", 
+         StringForm["``.``", 
+          StringForm["``", "c"], "0"]], "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          
+          InterpretationBox["\<\"(\\!\\(TraditionalForm\\`\\\"\\\\!\\\\(\
+TraditionalForm\\\\`\\\\\\\"a\\\\\\\"\\\\).0\\\"\\) | 0)\"\>",
+           StringForm["(`` | ``)", 
+            StringForm["``.``", 
+             StringForm["``", "a"], "0"], "0"],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 5],
+        InterpretationBox[
+        "\"(\\!\\(\\\"\\\\!\\\\(\\\\\\\"a\\\\\\\"\\\\).0\\\"\\) | 0)\"", 
+         StringForm["(`` | ``)", 
+          StringForm["``.``", 
+           StringForm["``", "a"], "0"], "0"], Editable -> False]],
+       Annotation[#, 
+        StringForm["(`` | ``)", 
+         StringForm["``.``", 
+          StringForm["``", "a"], "0"], "0"], "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          InterpretationBox["\<\"(0 | 0)\"\>",
+           StringForm["(`` | ``)", "0", "0"],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 6],
+        InterpretationBox["\"(0 | 0)\"", 
+         StringForm["(`` | ``)", "0", "0"], Editable -> False]],
+       Annotation[#, 
+        StringForm["(`` | ``)", "0", "0"], "Tooltip"]& ]}}],
+   Annotation[#, 
+    VertexCoordinateRules -> {{2.1040042858004147`, 0.932668771838491}, {
+     2.104280698167112, 0.02115277161511092}, {1.052066791160055, 
+     0.9540467452689065}, {1.0524668639458703`, 0.}, {0., 
+     0.9324738483887802}, {0.0007475781271284454, 0.020722511526360066`}}]& ],
+  
+  AspectRatio->Automatic,
+  FrameTicks->None,
+  PlotRange->All,
+  PlotRangePadding->Scaled[0.1]]], "Output",
+ CellChangeTimes->{3.55272932550611*^9, 3.552729507157349*^9}],
+
+Cell[TextData[{
+ "la semantica del processo Restr/(P|Q) e\[CloseCurlyQuote] il grafo\n\t\
+{{Restr/(R|S), dove R \[Element] ",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["N", "1"], TraditionalForm]]],
+ " e S \[Element] ",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["N", "2"], TraditionalForm]]],
+ "}, \n\t\t{Restr/(P|Q)",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", "label"]]],
+ "Restr/R, dove P|Q",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", "label"]]],
+ "R \[Element] ",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["E", "3"], TraditionalForm]]],
+ " e label \[NotElement] ",
+ Cell[BoxData[
+  FormBox["Restr", TraditionalForm]]],
+ "} \n\t\t\[Union] {Restr/(R|S)",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", "tau"]]],
+ "Restr/(T|V), dove R",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", "a"]]],
+ "T \[Element] E e S",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", 
+   RowBox[{":", "a"}]]]],
+ "V \[Element] F e a\[Element]Restr} \n\t\t\[Union] {Restr/(R|S)",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", "tau"]]],
+ "Restr/(T|V), dove R",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", 
+   RowBox[{":", "a"}]]]],
+ "T \[Element] E e S",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", "a"]]],
+ "V \[Element] F e a\[Element]Restr}}\ndove {",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["N", "1"], TraditionalForm]]],
+ ",",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["E", "1"], TraditionalForm]]],
+ "} e\[CloseCurlyQuote] la semantica del processo P, {",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["N", "2"], TraditionalForm]]],
+ ",",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["E", "2"], TraditionalForm]]],
+ "} e\[CloseCurlyQuote] la semantica del processo Q e {",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["N", "3"], TraditionalForm]]],
+ ",",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["E", "3"], TraditionalForm]]],
+ "} e\[CloseCurlyQuote] la semantica del processo P|Q. La restrizione in \
+combinazione con la composizione parallela serve per la comunicazione tra due \
+processi. Ad esempio il processo a.0 prende a in input, mentre il processo \
+:a.0 da a in output. Questi due processi possono comunicare tra di loro \
+attraverso a. La semantica di {a}/(a.0|:a.0) e\[CloseCurlyQuote] il grafo \
+seguente "
+}], "Item",
+ CellChangeTimes->{
+  3.552714728051319*^9, {3.552729374552496*^9, 3.552729411748755*^9}, {
+   3.552733484242062*^9, 3.5527334892560463`*^9}, {3.554299274902248*^9, 
+   3.554299341740831*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[
+  TagBox[GraphicsComplexBox[{{1., 0.}, {0., 8.979318433952318*^-11}}, {
+     {RGBColor[0.5, 0., 0.], Arrowheads[{{0.041582132564841494`, 0.7}}], 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox["\"tau\"", StripOnInput -> False], 
+               TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.041582132564841494`, 0.8}}], 
+       ArrowBox[{1, 2}]}}, {
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          
+          InterpretationBox["\<\"(\\!\\(TraditionalForm\\`\\({\\\"a\\\"}\\)\\)\
+ / \\!\\(TraditionalForm\\`\\\"(\\\\!\\\\(TraditionalForm\\\\`\\\\\\\"\\\\\\\\\
+!\\\\\\\\(TraditionalForm\\\\\\\\`\\\\\\\\\\\\\\\"a\\\\\\\\\\\\\\\"\\\\\\\\).\
+0\\\\\\\"\\\\) | \
+\\\\!\\\\(TraditionalForm\\\\`\\\\\\\"\\\\\\\\!\\\\\\\\(TraditionalForm\\\\\\\
+\\`\\\\\\\\\\\\\\\":a\\\\\\\\\\\\\\\"\\\\\\\\).0\\\\\\\"\\\\))\\\"\\))\"\>",
+           StringForm["(`` / ``)", {"a"}, 
+            StringForm["(`` | ``)", 
+             StringForm["``.``", 
+              StringForm["``", "a"], "0"], 
+             StringForm["``.``", 
+              StringForm[":``", "a"], "0"]]],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 1],
+        InterpretationBox[
+        "\"(\\!\\({\\\"a\\\"}\\) / \\!\\(\\\"(\\\\!\\\\(\\\\\\\"\\\\\\\\!\\\\\
+\\\\(\\\\\\\\\\\\\\\"a\\\\\\\\\\\\\\\"\\\\\\\\).0\\\\\\\"\\\\) | \\\\!\\\\(\\\
+\\\\\"\\\\\\\\!\\\\\\\\(\\\\\\\\\\\\\\\":a\\\\\\\\\\\\\\\"\\\\\\\\).0\\\\\\\"\
+\\\\))\\\"\\))\"", 
+         StringForm["(`` / ``)", {"a"}, 
+          StringForm["(`` | ``)", 
+           StringForm["``.``", 
+            StringForm["``", "a"], "0"], 
+           StringForm["``.``", 
+            StringForm[":``", "a"], "0"]]], Editable -> False]],
+       Annotation[#, 
+        StringForm["(`` / ``)", {"a"}, 
+         StringForm["(`` | ``)", 
+          StringForm["``.``", 
+           StringForm["``", "a"], "0"], 
+          StringForm["``.``", 
+           StringForm[":``", "a"], "0"]]], "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          
+          InterpretationBox["\<\"(\\!\\(TraditionalForm\\`\\({\\\"a\\\"}\\)\\)\
+ / \\!\\(TraditionalForm\\`\\\"(0 | 0)\\\"\\))\"\>",
+           StringForm["(`` / ``)", {"a"}, 
+            StringForm["(`` | ``)", "0", "0"]],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 2],
+        InterpretationBox[
+        "\"(\\!\\({\\\"a\\\"}\\) / \\!\\(\\\"(0 | 0)\\\"\\))\"", 
+         StringForm["(`` / ``)", {"a"}, 
+          StringForm["(`` | ``)", "0", "0"]], Editable -> False]],
+       Annotation[#, 
+        StringForm["(`` / ``)", {"a"}, 
+         StringForm["(`` | ``)", "0", "0"]], "Tooltip"]& ]}}],
+   Annotation[#, 
+    VertexCoordinateRules -> {{1., 0.}, {0., 8.979318433952318*^-11}}]& ],
+  AspectRatio->Automatic,
+  FrameTicks->None,
+  PlotRange->All,
+  PlotRangePadding->Scaled[0.1]]], "Output",
+ CellChangeTimes->{3.552729479545165*^9}],
+
+Cell["\<\
+Da qui si capisce il significato di tau: quando un sistema fa una azione tau \
+significa che due processi si sono scambiati un nome. 
+
+Mostriamo anche un caso nel quale la comunicazione tra processi non avviene. \
+La semantica di {a b}/(b.0|:c.0) e\[CloseCurlyQuote] il grafo seguente \
+\>", "Text",
+ CellChangeTimes->{{3.552729433015567*^9, 3.552729441534149*^9}, {
+  3.554299346763039*^9, 3.554299352281556*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[
+  TagBox[GraphicsComplexBox[{{1., 0.}, {0., 8.979318433952318*^-11}}, {
+     {RGBColor[0.5, 0., 0.], Arrowheads[{{0.041582132564841494`, 0.7}}], 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\":c\"", 
+                 StringForm[":``", "c"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.041582132564841494`, 0.8}}], 
+       ArrowBox[{1, 2}]}}, {
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          
+          InterpretationBox["\<\"(\\!\\(TraditionalForm\\`\\({\\\"a\\\", \
+\\\"b\\\"}\\)\\) / \
+\\!\\(TraditionalForm\\`\\\"(\\\\!\\\\(TraditionalForm\\\\`\\\\\\\"\\\\\\\\!\\\
+\\\\\\(TraditionalForm\\\\\\\\`\\\\\\\\\\\\\\\"b\\\\\\\\\\\\\\\"\\\\\\\\).0\\\
+\\\\\"\\\\) | \
+\\\\!\\\\(TraditionalForm\\\\`\\\\\\\"\\\\\\\\!\\\\\\\\(TraditionalForm\\\\\\\
+\\`\\\\\\\\\\\\\\\":c\\\\\\\\\\\\\\\"\\\\\\\\).0\\\\\\\"\\\\))\\\"\\))\"\>",
+           StringForm["(`` / ``)", {"a", "b"}, 
+            StringForm["(`` | ``)", 
+             StringForm["``.``", 
+              StringForm["``", "b"], "0"], 
+             StringForm["``.``", 
+              StringForm[":``", "c"], "0"]]],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 1],
+        InterpretationBox[
+        "\"(\\!\\({\\\"a\\\", \\\"b\\\"}\\) / \\!\\(\\\"(\\\\!\\\\(\\\\\\\"\\\
+\\\\\\!\\\\\\\\(\\\\\\\\\\\\\\\"b\\\\\\\\\\\\\\\"\\\\\\\\).0\\\\\\\"\\\\) | \
+\\\\!\\\\(\\\\\\\"\\\\\\\\!\\\\\\\\(\\\\\\\\\\\\\\\":c\\\\\\\\\\\\\\\"\\\\\\\\\
+).0\\\\\\\"\\\\))\\\"\\))\"", 
+         StringForm["(`` / ``)", {"a", "b"}, 
+          StringForm["(`` | ``)", 
+           StringForm["``.``", 
+            StringForm["``", "b"], "0"], 
+           StringForm["``.``", 
+            StringForm[":``", "c"], "0"]]], Editable -> False]],
+       Annotation[#, 
+        StringForm["(`` / ``)", {"a", "b"}, 
+         StringForm["(`` | ``)", 
+          StringForm["``.``", 
+           StringForm["``", "b"], "0"], 
+          StringForm["``.``", 
+           StringForm[":``", "c"], "0"]]], "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          
+          InterpretationBox["\<\"(\\!\\(TraditionalForm\\`\\({\\\"a\\\", \
+\\\"b\\\"}\\)\\) / \
+\\!\\(TraditionalForm\\`\\\"(\\\\!\\\\(TraditionalForm\\\\`\\\\\\\"\\\\\\\\!\\\
+\\\\\\(TraditionalForm\\\\\\\\`\\\\\\\\\\\\\\\"b\\\\\\\\\\\\\\\"\\\\\\\\).0\\\
+\\\\\"\\\\) | 0)\\\"\\))\"\>",
+           StringForm["(`` / ``)", {"a", "b"}, 
+            StringForm["(`` | ``)", 
+             StringForm["``.``", 
+              StringForm["``", "b"], "0"], "0"]],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 2],
+        InterpretationBox[
+        "\"(\\!\\({\\\"a\\\", \\\"b\\\"}\\) / \\!\\(\\\"(\\\\!\\\\(\\\\\\\"\\\
+\\\\\\!\\\\\\\\(\\\\\\\\\\\\\\\"b\\\\\\\\\\\\\\\"\\\\\\\\).0\\\\\\\"\\\\) | \
+0)\\\"\\))\"", 
+         StringForm["(`` / ``)", {"a", "b"}, 
+          StringForm["(`` | ``)", 
+           StringForm["``.``", 
+            StringForm["``", "b"], "0"], "0"]], Editable -> False]],
+       Annotation[#, 
+        StringForm["(`` / ``)", {"a", "b"}, 
+         StringForm["(`` | ``)", 
+          StringForm["``.``", 
+           StringForm["``", "b"], "0"], "0"]], "Tooltip"]& ]}}],
+   Annotation[#, 
+    VertexCoordinateRules -> {{1., 0.}, {0., 8.979318433952318*^-11}}]& ],
+  AspectRatio->Automatic,
+  FrameTicks->None,
+  PlotRange->All,
+  PlotRangePadding->Scaled[0.1]]], "Output",
+ CellChangeTimes->{{3.552729485691778*^9, 3.552729497670542*^9}}],
+
+Cell[TextData[{
+ "la semantica del processo Restr/P, se P non ha una composizione parallela \
+al top level, e\[CloseCurlyQuote] il grafo\n\t{{Restr/R, dove R \[Element] \
+N}, \n\t\t{Restr/R",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", "a"]]],
+ "Restr/S, dove R",
+ Cell[BoxData[
+  OverscriptBox["\[LongRightArrow]", "a"]]],
+ "S \[Element] E e a \[NotElement] Restr}}\ndove {N,E} e\[CloseCurlyQuote] la \
+semantica del processo P.  In questo caso la restrizione serve ad impedire ad \
+un processo di fare un certo input o un certo output. Ad esempio la semantica \
+del processo {a b}/(a.0+b.0+c.0) e\[CloseCurlyQuote] il grafo seguente"
+}], "Item",
+ CellChangeTimes->{{3.552714391884801*^9, 3.5527144381398373`*^9}, {
+  3.552729528811433*^9, 3.552729539349083*^9}, {3.554299356914501*^9, 
+  3.554299385611136*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[
+  TagBox[GraphicsComplexBox[{{1., 0.}, {0., 8.979318433952318*^-11}}, {
+     {RGBColor[0.5, 0., 0.], Arrowheads[{{0.041582132564841494`, 0.7}}], 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\"c\"", 
+                 StringForm["``", "c"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.041582132564841494`, 0.8}}], 
+       ArrowBox[{1, 2}]}}, {
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          
+          InterpretationBox["\<\"(\\!\\(TraditionalForm\\`\\({\\\"a\\\", \
+\\\"b\\\"}\\)\\) / \
+\\!\\(TraditionalForm\\`\\\"(\\\\!\\\\(TraditionalForm\\\\`\\\\\\\"(\\\\\\\\!\
+\\\\\\\\(TraditionalForm\\\\\\\\`\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\!\\\\\\\\\\\\\
+\\\\(TraditionalForm\\\\\\\\\\\\\\\\`\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"a\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\).0\\\\\\\\\\\\\\\"\\\\\\\\) + \\\\\\\
+\\!\\\\\\\\(TraditionalForm\\\\\\\\`\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\!\\\\\\\\\
+\\\\\\\\(TraditionalForm\\\\\\\\\\\\\\\\`\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"b\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\).0\\\\\\\\\\\\\\\"\\\\\\\\))\\\\\
+\\\"\\\\) + \
+\\\\!\\\\(TraditionalForm\\\\`\\\\\\\"\\\\\\\\!\\\\\\\\(TraditionalForm\\\\\\\
+\\`\\\\\\\\\\\\\\\"c\\\\\\\\\\\\\\\"\\\\\\\\).0\\\\\\\"\\\\))\\\"\\))\"\>",
+           StringForm["(`` / ``)", {"a", "b"}, 
+            StringForm["(`` + ``)", 
+             StringForm["(`` + ``)", 
+              StringForm["``.``", 
+               StringForm["``", "a"], "0"], 
+              StringForm["``.``", 
+               StringForm["``", "b"], "0"]], 
+             StringForm["``.``", 
+              StringForm["``", "c"], "0"]]],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 1],
+        InterpretationBox[
+        "\"(\\!\\({\\\"a\\\", \\\"b\\\"}\\) / \
+\\!\\(\\\"(\\\\!\\\\(\\\\\\\"(\\\\\\\\!\\\\\\\\(\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\
+\\!\\\\\\\\\\\\\\\\(\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"a\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\"\\\\\\\\\\\\\\\\).0\\\\\\\\\\\\\\\"\\\\\\\\) + \\\\\\\\!\\\\\\\\(\\\\\
+\\\\\\\\\\\"\\\\\\\\\\\\\\\\!\\\\\\\\\\\\\\\\(\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\
+b\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\).0\\\\\\\\\\\\\\\"\\\\\\\\))\
+\\\\\\\"\\\\) + \\\\!\\\\(\\\\\\\"\\\\\\\\!\\\\\\\\(\\\\\\\\\\\\\\\"c\\\\\\\\\
+\\\\\\\"\\\\\\\\).0\\\\\\\"\\\\))\\\"\\))\"", 
+         StringForm["(`` / ``)", {"a", "b"}, 
+          StringForm["(`` + ``)", 
+           StringForm["(`` + ``)", 
+            StringForm["``.``", 
+             StringForm["``", "a"], "0"], 
+            StringForm["``.``", 
+             StringForm["``", "b"], "0"]], 
+           StringForm["``.``", 
+            StringForm["``", "c"], "0"]]], Editable -> False]],
+       Annotation[#, 
+        StringForm["(`` / ``)", {"a", "b"}, 
+         StringForm["(`` + ``)", 
+          StringForm["(`` + ``)", 
+           StringForm["``.``", 
+            StringForm["``", "a"], "0"], 
+           StringForm["``.``", 
+            StringForm["``", "b"], "0"]], 
+          StringForm["``.``", 
+           StringForm["``", "c"], "0"]]], "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          
+          InterpretationBox["\<\"(\\!\\(TraditionalForm\\`\\({\\\"a\\\", \
+\\\"b\\\"}\\)\\) / 0)\"\>",
+           StringForm["(`` / ``)", {"a", "b"}, "0"],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 2],
+        InterpretationBox["\"(\\!\\({\\\"a\\\", \\\"b\\\"}\\) / 0)\"", 
+         StringForm["(`` / ``)", {"a", "b"}, "0"], Editable -> False]],
+       Annotation[#, 
+        StringForm["(`` / ``)", {"a", "b"}, "0"], "Tooltip"]& ]}}],
+   Annotation[#, 
+    VertexCoordinateRules -> {{1., 0.}, {0., 8.979318433952318*^-11}}]& ],
+  AspectRatio->Automatic,
+  FrameTicks->None,
+  PlotRange->All,
+  PlotRangePadding->Scaled[0.1]]], "Output",
+ CellChangeTimes->{3.5527295468375893`*^9}],
+
+Cell["\<\
+ sia A un identificatore la cui definizione e\[CloseCurlyQuote] A=P e sia \
+{N,E} la semantica di P. Allora la semantica di A e\[CloseCurlyQuote] quel \
+grafo ottenuto da {N,E} dopo aver sostituito A a P. Ad esempio se un \
+identificatore A e\[CloseCurlyQuote] definito A=a.b.A allora la semantica di \
+A e\[CloseCurlyQuote] il grafo:\
+\>", "Item",
+ CellChangeTimes->{{3.5527143361208153`*^9, 3.552714337646618*^9}, {
+  3.5527296039071283`*^9, 3.5527296057248583`*^9}, {3.554299391162616*^9, 
+  3.554299393023324*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[
+  TagBox[GraphicsComplexBox[CompressedData["
+1:eJxTTMoPSmViYGBQAmIQDQEf7BnQQPKxIyaL1t2wnaRWbRW+5Y09w9Tf2m6x
+s/bLui0oKL/42r4g51nTu7IF+0stZp988uaVfcInMcbN9ov3347sefeM7ZW9
+ALu9lGDH0v1/mop+HZV/aV/gHzsz0H/5/ilP+pNPmb+wd2jSP/J0yor9oW6b
+ntj4P7dvWPyxPT1i5f6sE6lpaWnP7B/ExM2cOXPlftfvhsbGxpftHRL5wfyd
+jDPN2hIv2ifkTQer19iwu/Cawnl7A/FTh0Hm+ZUair1oOG1fsPXNDJB9cwtP
+uaY8OW6/wOOwJMg9j9P7b+b4HLGfIDuBAeTezbuqbZV2HbB/MCkE7J8LWxV1
+3GJ32TMwHdIC+bfgtBqY71Dfpgvk2/c8rwOrn/BwdTNQvb2e3GSweQ3pd0D+
+t58+4xzYPoMaFmmgffZCX0zB7plwRGkW0D32m3IPgN2b8P0LyP/2kcWzwf5Z
+ILG9A+gfe918E7B/GS4pzwL61z6eJR0cHgnXroD8b69SvxkSXo9jwOp/CE8E
+h2dATz/YvHWLisHhPUFrEyi87Wcl94Lj48DeDlB82HOqzQHH14ZJoWD3hgou
+BMcnA4cU2D8eJyHx7fDGRwfkXwAb8QQx
+    "], {
+     {RGBColor[0.5, 0., 0.], Arrowheads[{{0.041582132564841494`, 0.7}}], 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\"a\"", 
+                 StringForm["``", "a"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.041582132564841494`, 0.8}}], 
+       ArrowBox[{1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 
+        2}]}, 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\"b\"", 
+                 StringForm["``", "b"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.041582132564841494`, 0.8}}], 
+       ArrowBox[{2, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 
+        33, 34, 1}]}}, {
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox["\<\"A\"\>",
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 1],
+        "\"A\"",
+        TooltipStyle->"TextStyling"],
+       Annotation[#, "A", "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          InterpretationBox["\<\"\\!\\(TraditionalForm\\`\\\"b\\\"\\).A\"\>",
+           StringForm["``.``", 
+            StringForm["``", "b"], "A"],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 2],
+        InterpretationBox["\"\\!\\(\\\"b\\\"\\).A\"", 
+         StringForm["``.``", 
+          StringForm["``", "b"], "A"], Editable -> False]],
+       Annotation[#, 
+        StringForm["``.``", 
+         StringForm["``", "b"], "A"], "Tooltip"]& ]}}],
+   Annotation[#, 
+    VertexCoordinateRules -> {{1., 0.}, {0., 8.979318433952318*^-11}}]& ],
+  AspectRatio->Automatic,
+  FrameTicks->None,
+  PlotRange->All,
+  PlotRangePadding->Scaled[0.1]]], "Output",
+ CellChangeTimes->{3.55272960673888*^9}]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "SlideShowNavigationBar",
+ CellTags->"SlideShowHeader"],
+
+Cell[CellGroupData[{
+
+Cell["Contenuto del package", "Section",
+ CellChangeTimes->{{3.509102811390083*^9, 3.509102814177911*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Generatore del grafo", "Subsection",
+ CellChangeTimes->{{3.509102824849111*^9, 3.509102833640951*^9}, {
+  3.509103021275876*^9, 3.509103028660571*^9}, {3.5525636030081387`*^9, 
+  3.552563603869336*^9}}],
+
+Cell["\<\
+La funzione getCcsGraph[process, definitions, iterationLimit] prende in \
+input:
+- process: una stringa che rappresenta un processo CCS
+- definitions: una stringa che contiene una sequenza di definizioni di \
+costanti. Le definizioni devono essere separate da un punto e virgola.
+- iterationLimit: un intero che limita il numero di iterazioni dell\
+\[CloseCurlyQuote]algoritmo.
+La funzione restituisce in output un grafo che e\[CloseCurlyQuote] la \
+semantica del processo di input.
+\
+\>", "Text",
+ CellChangeTimes->{{3.509463915818529*^9, 3.509464033894992*^9}, {
+   3.50946406558686*^9, 3.509464097316511*^9}, {3.509464171725429*^9, 
+   3.509464303582509*^9}, {3.509464463291809*^9, 3.509464463767542*^9}, 
+   3.509601229467452*^9, {3.509601290213818*^9, 3.509601290213964*^9}, {
+   3.50960133510335*^9, 3.509601335103502*^9}, {3.509612865807801*^9, 
+   3.509612931651893*^9}, {3.509684315903329*^9, 3.509684558801629*^9}, {
+   3.544001679381035*^9, 3.54400172057592*^9}, {3.544001893000779*^9, 
+   3.544001918592731*^9}, {3.544002132246849*^9, 3.5440021444980803`*^9}, {
+   3.544283239100988*^9, 3.5442832913827057`*^9}, {3.544285088452928*^9, 
+   3.544285089155826*^9}, {3.551343262395379*^9, 3.551343262815235*^9}, {
+   3.5514276450055637`*^9, 3.551427649373847*^9}, {3.551427696179564*^9, 
+   3.551427728888307*^9}, {3.551427765715495*^9, 3.551427831622963*^9}, 
+   3.551427899864555*^9, {3.551427934661335*^9, 3.551427955108033*^9}, {
+   3.551428011850016*^9, 3.5514280444890747`*^9}, {3.551442111903944*^9, 
+   3.551442137455554*^9}, {3.5525636323165092`*^9, 3.552563715863666*^9}, {
+   3.552563750030251*^9, 3.55256375071102*^9}, {3.552668046827188*^9, 
+   3.552668047598405*^9}}]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "SlideShowNavigationBar",
+ CellTags->"SlideShowHeader"],
+
+Cell[CellGroupData[{
+
+Cell["Esempio di uso del package", "Section",
+ CellChangeTimes->{{3.509103059305549*^9, 3.509103080544132*^9}, {
+   3.50910323506466*^9, 3.509103235349196*^9}, 3.551343372643147*^9}],
+
+Cell["\<\
+Vediamo un esempio di un sistema distribuito modellato con CCS. Ci sono due \
+processi: 
+- un distributore automatico di caffe\[CloseCurlyQuote] e the, di seguito \
+indicato con l\[CloseCurlyQuote]identificatore CTM (Cofee Tee Machine)
+- un cliente, di seguito indicato con l\[CloseCurlyQuote]identificatore \
+Customer
+
+La definizione del distributore automatico in CCS e\[CloseCurlyQuote] 
+\t\t\t\tCTM = coin.:coffee.CTM + :tea.CTM
+notiamo dalla definizione che il CTM si trova in uno stato iniziale in cui \
+puo\[CloseCurlyQuote] prendere in input una moneta (coin). Dopo che il CTM \
+accetta una moneta, si trova in uno stato nel quale puo\[CloseCurlyQuote] \
+decidere di fare un caffe\[CloseCurlyQuote] oppure un the. In questo semplice \
+esempio e\[CloseCurlyQuote] il distributore che decide se fare un the o un \
+caffe\[CloseCurlyQuote]. Dopo che il distributore da in output una bevanda \
+ritorna nel suo stato iniziale. La semantica di CTM e\[CloseCurlyQuote] la \
+seguente:\
+\>", "Text",
+ CellChangeTimes->{{3.509685789966747*^9, 3.509685830123603*^9}, {
+   3.509685935828412*^9, 3.509685935945096*^9}, 3.544034578016449*^9, {
+   3.552562647023348*^9, 3.552562981851733*^9}, {3.552650453210013*^9, 
+   3.5526504695353947`*^9}, {3.552670134196463*^9, 3.552670136840453*^9}, {
+   3.554299404322116*^9, 3.5542994097710342`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"Needs", "[", 
+  RowBox[{"\"\<CcsTool`\>\"", ",", 
+   RowBox[{
+    RowBox[{"NotebookDirectory", "[", "]"}], "<>", "\"\<ccsTool.m\>\""}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"GraphPlot", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"getCcsGraph", "[", "\[IndentingNewLine]", 
+    RowBox[{
+    "\"\<CTM\>\"", ",", " ", "\[IndentingNewLine]", 
+     "\"\<CTM = coin.(:coffee.CTM + :tea.CTM)\>\"", ",", 
+     "\[IndentingNewLine]", "3"}], "\[IndentingNewLine]", "]"}], ",", " ", 
+   "\[IndentingNewLine]", 
+   RowBox[{"DirectedEdges", "\[Rule]", "True"}], ",", " ", 
+   "\[IndentingNewLine]", 
+   RowBox[{"VertexLabeling", "\[Rule]", "All"}]}], "\[IndentingNewLine]", 
+  "]"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.509685833267404*^9, 3.50968584686098*^9}, 
+   3.509685925744773*^9, {3.509686509901779*^9, 3.509686512206658*^9}, {
+   3.543750337188306*^9, 3.543750347722497*^9}, {3.544034444548853*^9, 
+   3.5440344528364143`*^9}, {3.544034550271529*^9, 3.544034560127095*^9}, {
+   3.5441040975665493`*^9, 3.5441040979735527`*^9}, {3.544104139356317*^9, 
+   3.544104141212544*^9}, {3.544105533123983*^9, 3.544105558196167*^9}, {
+   3.54411265813863*^9, 3.5441126650360193`*^9}, {3.5525625621811953`*^9, 
+   3.552562574887498*^9}, {3.552564158371422*^9, 3.552564158874887*^9}, {
+   3.552564195557726*^9, 3.552564197035799*^9}, {3.554299437887437*^9, 
+   3.554299444255885*^9}, {3.554299488206724*^9, 3.5542994907492857`*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[
+  TagBox[GraphicsComplexBox[CompressedData["
+1:eJxTTMoPSmViYGBQAmIQDQEf7BnQQPKxIyaL1t2wnaRWbRW+5Y09w9Tf2m6x
+s/bLui0oKL/42r4g51nTu7IF+0stZp988uaVfcInMcbN9ov3347sefeM7ZW9
+ALu9lGDH0v1/mop+HZV/aV/gHzsz0H/5/ilP+pNPmb+wd2jSP/J0yor9oW6b
+ntj4P7dvWPyxPT1i5f6sE6lpaWnP7B/ExM2cOXPlftfvhsbGxpftHRL5wfyd
+jDPN2hIv2ifkTQer19iwu/Cawnl7A/FTh0Hm+ZUair1oOG1fsPXNDJB9cwtP
+uaY8OW6/wOOwJMg9j9P7b+b4HLGfIDuBAeTezbuqbZV2HbB/MCkE7J8LWxV1
+3GJ32TMwHdIC+bfgtBqY71Dfpgvk2/c8rwOrn/BwdTNQvb2e3GSweQ3pd0D+
+t58+4xzYPoMaFmmgffZCX0zB7plwRGkW0D32m3IPgN2b8P0LyP/2kcWzwf5Z
+ILG9A+gfe918E7B/GS4pzwL61z6eJR0cHgnXroD8b69SvxkSXo9jwOp/CE8E
+h2dATz/YvHWLisHhPUFrEyi87Wcl94Lj48DeDlB82HOqzQHH14ZJoWD3hgou
+BMcnA4cU2D8eJyHx7fDGRwfkXwAb8QQx
+    "], {
+     {RGBColor[0.5, 0., 0.], Arrowheads[{{0.041582132564841494`, 0.7}}], 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\"coin\"", 
+                 StringForm["``", "coin"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.041582132564841494`, 0.8}}], 
+       ArrowBox[{1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 
+        2}]}, 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\":coffee\"", 
+                 StringForm[":``", "coffee"], Editable -> False], 
+                StripOnInput -> False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.041582132564841494`, 0.8}}], 
+       ArrowBox[{2, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 
+        33, 34, 1}]}, 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\":tea\"", 
+                 StringForm[":``", "tea"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.041582132564841494`, 0.8}}], 
+       ArrowBox[{2, 1}]}}, {
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox["\<\"CTM\"\>",
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 1],
+        "\"CTM\"",
+        TooltipStyle->"TextStyling"],
+       Annotation[#, "CTM", "Tooltip"]& ], 
+      TagBox[
+       TooltipBox[InsetBox[
+         FrameBox[
+          
+          InterpretationBox["\<\"(\\!\\(TraditionalForm\\`\\\"\\\\!\\\\(\
+TraditionalForm\\\\`\\\\\\\":coffee\\\\\\\"\\\\).CTM\\\"\\) + \
+\\!\\(TraditionalForm\\`\\\"\\\\!\\\\(TraditionalForm\\\\`\\\\\\\":tea\\\\\\\"\
+\\\\).CTM\\\"\\))\"\>",
+           StringForm["(`` + ``)", 
+            StringForm["``.``", 
+             StringForm[":``", "coffee"], "CTM"], 
+            StringForm["``.``", 
+             StringForm[":``", "tea"], "CTM"]],
+           Editable->False],
+          Background->RGBColor[1, 1, 0.8],
+          FrameStyle->RGBColor[0.94, 0.85, 0.36],
+          StripOnInput->False], 2],
+        InterpretationBox[
+        "\"(\\!\\(\\\"\\\\!\\\\(\\\\\\\":coffee\\\\\\\"\\\\).CTM\\\"\\) + \\!\
+\\(\\\"\\\\!\\\\(\\\\\\\":tea\\\\\\\"\\\\).CTM\\\"\\))\"", 
+         StringForm["(`` + ``)", 
+          StringForm["``.``", 
+           StringForm[":``", "coffee"], "CTM"], 
+          StringForm["``.``", 
+           StringForm[":``", "tea"], "CTM"]], Editable -> False]],
+       Annotation[#, 
+        StringForm["(`` + ``)", 
+         StringForm["``.``", 
+          StringForm[":``", "coffee"], "CTM"], 
+         StringForm["``.``", 
+          StringForm[":``", "tea"], "CTM"]], "Tooltip"]& ]}}],
+   Annotation[#, 
+    VertexCoordinateRules -> {{1., 0.}, {0., 8.979318433952318*^-11}}]& ],
+  AspectRatio->Automatic,
+  FrameTicks->None,
+  ImageSize->{472.5, Automatic},
+  PlotRange->All,
+  PlotRangePadding->Scaled[0.1]]], "Output",
+ CellChangeTimes->{
+  3.509685928370125*^9, 3.509686325064944*^9, {3.509686500337972*^9, 
+   3.509686514385419*^9}, {3.543750332748114*^9, 3.543750348718732*^9}, 
+   3.544001726740121*^9, {3.544034446761931*^9, 3.54403445358689*^9}, {
+   3.5441028388484793`*^9, 3.544102852400837*^9}, 3.544102935638322*^9, {
+   3.5441040912328653`*^9, 3.544104099538834*^9}, 3.54410414163663*^9, 
+   3.5441041997233257`*^9, {3.544105256009345*^9, 3.544105284424225*^9}, {
+   3.5441054460228367`*^9, 3.544105449863427*^9}, {3.544105528632803*^9, 
+   3.544105558619174*^9}, 3.544112301740903*^9, {3.5441126597005568`*^9, 
+   3.544112665362205*^9}, 3.552564042132846*^9, 3.5525640737647343`*^9, 
+   3.5525641591438007`*^9, 3.552564197395314*^9, 3.5526505453912907`*^9, 
+   3.554299451858137*^9, 3.554299491424992*^9}]
+}, Open  ]],
+
+Cell["\<\
+
+La definizione in CCS che diamo di un possibile cliente e\[CloseCurlyQuote] \
+la seguente
+\t\t\t\tCustomer= :coin.coffee.0
+In questo modo modelliamo un cliente che inserisce una moneta e prende un \
+caffe\[CloseCurlyQuote]. La semantica di Customer e\[CloseCurlyQuote] la \
+seguente:\
+\>", "Text",
+ CellChangeTimes->{{3.544034592923579*^9, 3.54403463141287*^9}, {
+  3.5440347554886293`*^9, 3.544034790865758*^9}, {3.55237324505339*^9, 
+  3.552373276765504*^9}, {3.552562480044292*^9, 3.552562490958026*^9}, {
+  3.5525629755441847`*^9, 3.5525630672800694`*^9}, {3.5525631041776447`*^9, 
+  3.552563111861662*^9}, {3.552650476473641*^9, 3.552650479008606*^9}, {
+  3.554299535848836*^9, 3.554299537816761*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"TreePlot", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"getCcsGraph", "[", "\[IndentingNewLine]", 
+    RowBox[{
+    "\"\<Customer\>\"", ",", "\[IndentingNewLine]", 
+     "\"\<Customer = :coin.coffee.0\>\"", ",", " ", "\[IndentingNewLine]", 
+     "3"}], "\[IndentingNewLine]", "]"}], ",", " ", "\[IndentingNewLine]", 
+   RowBox[{"DirectedEdges", "\[Rule]", "True"}], ",", " ", 
+   "\[IndentingNewLine]", 
+   RowBox[{"VertexLabeling", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.544034540494726*^9, 3.544034547471491*^9}, {
+   3.544034646708517*^9, 3.544034735478032*^9}, {3.544105579521872*^9, 
+   3.544105597152892*^9}, 3.5441061355395117`*^9, {3.5525625845092573`*^9, 
+   3.552562594313134*^9}, {3.552564134011304*^9, 3.552564134904327*^9}, {
+   3.554299540535149*^9, 3.554299545064148*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[
+  TagBox[GraphicsComplexBox[{{0., 0.}, {0.4472135954999579, 
+    0.8944271909999159}, {0.8944271909999159, 0.}}, {
+     {RGBColor[0.5, 0., 0.], Arrowheads[{{0.04266728990926259, 0.7}}], 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\":coin\"", 
+                 StringForm[":``", "coin"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.04266728990926259, 0.8}}], 
+       ArrowBox[{1, 2}]}, 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox[
+                InterpretationBox["\"coffee\"", 
+                 StringForm["``", "coffee"], Editable -> False], StripOnInput -> 
+                False], TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.04266728990926259, 0.8}}], 
+       ArrowBox[{2, 3}]}}, {InsetBox[
+       FrameBox["\<\"Customer\"\>",
+        Background->RGBColor[1, 1, 0.8],
+        FrameStyle->RGBColor[0.94, 0.85, 0.36],
+        StripOnInput->False], 1], InsetBox[
+       FrameBox[
+        InterpretationBox["\<\"\\!\\(TraditionalForm\\`\\\"coffee\\\"\\).0\"\>\
+",
+         StringForm["``.``", 
+          StringForm["``", "coffee"], "0"],
+         Editable->False],
+        Background->RGBColor[1, 1, 0.8],
+        FrameStyle->RGBColor[0.94, 0.85, 0.36],
+        StripOnInput->False], 2], InsetBox[
+       FrameBox["\<\"0\"\>",
+        Background->RGBColor[1, 1, 0.8],
+        FrameStyle->RGBColor[0.94, 0.85, 0.36],
+        StripOnInput->False], 3]}}],
+   Annotation[#, 
+    VertexCoordinateRules -> {{0., 0.}, {0.4472135954999579, 
+     0.8944271909999159}, {0.8944271909999159, 0.}}]& ],
+  AspectRatio->1.,
+  FrameTicks->None,
+  ImageSize->{159., Automatic},
+  PlotRange->All,
+  PlotRangePadding->Scaled[0.1]]], "Output",
+ CellChangeTimes->{{3.5440347304424553`*^9, 3.544034735799716*^9}, 
+   3.544102951252454*^9, {3.544105589789524*^9, 3.544105597477252*^9}, 
+   3.544106153403798*^9, 3.5441123065637083`*^9, 3.552564082982834*^9, 
+   3.552564135186056*^9, 3.5526505581040697`*^9, 3.554299545654294*^9}]
+}, Open  ]],
+
+Cell["\<\
+
+Modelliamo nel modo seguente il sistema cliente-distributore:
+\t\t\t\t{coin, coffee, tea}/(CTM|Customer)
+La semantica del sistema e\[CloseCurlyQuote] la seguente:\t\t\t\
+\>", "Text",
+ CellChangeTimes->{{3.5440347989132643`*^9, 3.544034829600462*^9}, {
+  3.552562613605008*^9, 3.552562616788266*^9}, {3.552563122956984*^9, 
+  3.552563219088524*^9}, {3.5526504856041107`*^9, 3.552650486266595*^9}, {
+  3.552670215002651*^9, 3.55267024286517*^9}, {3.554299559141156*^9, 
+  3.554299559889735*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"TreePlot", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"getCcsGraph", "[", "\[IndentingNewLine]", 
+    RowBox[{
+    "\"\<{coin coffee tea}/(CTM|Customer)\>\"", ",", " ", 
+     "\"\<CTM = coin.(:coffee.CTM+:tea.CTM); Customer = :coin.(coffee.0)\>\"",
+      ",", " ", "\[IndentingNewLine]", "5"}], "\[IndentingNewLine]", "]"}], 
+   ",", " ", "\[IndentingNewLine]", 
+   RowBox[{"VertexLabeling", "\[Rule]", "True"}], ",", " ", 
+   "\[IndentingNewLine]", 
+   RowBox[{"DirectedEdges", "\[Rule]", "True"}]}], "\[IndentingNewLine]", 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.544034834448948*^9, 3.5440348854487867`*^9}, {
+   3.5441029715533733`*^9, 3.544103012601018*^9}, {3.544105619446349*^9, 
+   3.544105653995276*^9}, {3.544105747360676*^9, 3.5441057567715054`*^9}, {
+   3.544105830118075*^9, 3.5441058303062763`*^9}, {3.5441058832662563`*^9, 
+   3.5441058878528852`*^9}, {3.544106157213628*^9, 3.544106170756106*^9}, {
+   3.5441117062063*^9, 3.544111730119939*^9}, {3.544111917629388*^9, 
+   3.544111941304557*^9}, {3.544111984274461*^9, 3.544112041598428*^9}, {
+   3.5441120788708963`*^9, 3.5441120832724533`*^9}, {3.544112463192079*^9, 
+   3.54411247167295*^9}, 3.5441125675636377`*^9, {3.544112674076806*^9, 
+   3.544112674517395*^9}, {3.5525625284115458`*^9, 3.552562548194943*^9}, {
+   3.5525640307371893`*^9, 3.552564031258041*^9}, {3.552564091989234*^9, 
+   3.552564092484685*^9}, {3.5527298765127163`*^9, 3.552729877717017*^9}, {
+   3.554299567127527*^9, 3.554299579930788*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[
+  TagBox[GraphicsComplexBox[{{0., 0.}, {0.4472135954999579, 
+    0.8944271909999159}, {0.8944271909999159, 0.}}, {
+     {RGBColor[0.5, 0., 0.], Arrowheads[{{0.04266728990926259, 0.7}}], 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox["\"tau\"", StripOnInput -> False], 
+               TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.04266728990926259, 0.8}}], 
+       ArrowBox[{1, 2}]}, 
+      {Arrowheads[{{0.5, 0.5, 
+          GraphicsBox[{
+            GrayLevel[0], 
+            InsetBox[
+             BoxData[
+              FormBox[
+               StyleBox["\"tau\"", StripOnInput -> False], 
+               TraditionalForm]], {0, 0}, 
+             ImageScaled[{0.5, 0.5}], Automatic, None, Background -> 
+             GrayLevel[1]]}]}, {0.04266728990926259, 0.8}}], 
+       ArrowBox[{2, 3}]}}, {InsetBox[
+       FrameBox[
+        InterpretationBox["\<\"(\\!\\(TraditionalForm\\`\\({\\\"coin\\\", \
+\\\"coffee\\\", \\\"tea\\\"}\\)\\) / \\!\\(TraditionalForm\\`\\\"(CTM | \
+Customer)\\\"\\))\"\>",
+         StringForm["(`` / ``)", {"coin", "coffee", "tea"}, 
+          StringForm["(`` | ``)", "CTM", "Customer"]],
+         Editable->False],
+        Background->RGBColor[1, 1, 0.8],
+        FrameStyle->RGBColor[0.94, 0.85, 0.36],
+        StripOnInput->False], 1], InsetBox[
+       FrameBox[
+        InterpretationBox["\<\"(\\!\\(TraditionalForm\\`\\({\\\"coin\\\", \
+\\\"coffee\\\", \\\"tea\\\"}\\)\\) / \
+\\!\\(TraditionalForm\\`\\\"(\\\\!\\\\(TraditionalForm\\\\`\\\\\\\"(\\\\\\\\!\
+\\\\\\\\(TraditionalForm\\\\\\\\`\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\!\\\\\\\\\\\\\
+\\\\(TraditionalForm\\\\\\\\\\\\\\\\`\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\":coffee\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\).CTM\\\\\\\\\\\\\\\"\\\\\\\\) \
++ \\\\\\\\!\\\\\\\\(TraditionalForm\\\\\\\\`\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\!\
+\\\\\\\\\\\\\\\\(TraditionalForm\\\\\\\\\\\\\\\\`\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\":tea\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\).CTM\\\\\\\\\\\\\\\"\
+\\\\\\\\))\\\\\\\"\\\\) | \\\\!\\\\(TraditionalForm\\\\`\\\\\\\"\\\\\\\\!\\\\\
+\\\\(TraditionalForm\\\\\\\\`\\\\\\\\\\\\\\\"coffee\\\\\\\\\\\\\\\"\\\\\\\\).\
+0\\\\\\\"\\\\))\\\"\\))\"\>",
+         StringForm["(`` / ``)", {"coin", "coffee", "tea"}, 
+          StringForm["(`` | ``)", 
+           StringForm["(`` + ``)", 
+            StringForm["``.``", 
+             StringForm[":``", "coffee"], "CTM"], 
+            StringForm["``.``", 
+             StringForm[":``", "tea"], "CTM"]], 
+           StringForm["``.``", 
+            StringForm["``", "coffee"], "0"]]],
+         Editable->False],
+        Background->RGBColor[1, 1, 0.8],
+        FrameStyle->RGBColor[0.94, 0.85, 0.36],
+        StripOnInput->False], 2], InsetBox[
+       FrameBox[
+        InterpretationBox["\<\"(\\!\\(TraditionalForm\\`\\({\\\"coin\\\", \
+\\\"coffee\\\", \\\"tea\\\"}\\)\\) / \\!\\(TraditionalForm\\`\\\"(CTM | \
+0)\\\"\\))\"\>",
+         StringForm["(`` / ``)", {"coin", "coffee", "tea"}, 
+          StringForm["(`` | ``)", "CTM", "0"]],
+         Editable->False],
+        Background->RGBColor[1, 1, 0.8],
+        FrameStyle->RGBColor[0.94, 0.85, 0.36],
+        StripOnInput->False], 3]}}],
+   Annotation[#, 
+    VertexCoordinateRules -> {{0., 0.}, {0.4472135954999579, 
+     0.8944271909999159}, {0.8944271909999159, 0.}}]& ],
+  AspectRatio->1.,
+  FrameTicks->None,
+  ImageSize->{405., Automatic},
+  PlotRange->All,
+  PlotRangePadding->Scaled[0.1]]], "Output",
+ CellChangeTimes->{
+  3.5441123199668827`*^9, 3.5441123603102083`*^9, {3.5441124648932323`*^9, 
+   3.544112472177656*^9}, 3.544112674788994*^9, 3.552564032426784*^9, {
+   3.5525640868983707`*^9, 3.5525640928796577`*^9}, 3.552650564415175*^9, 
+   3.552729878727059*^9, 3.554299581003779*^9}]
+}, Open  ]],
+
+Cell["\<\
+Lo stato iniziale del sistema e\[CloseCurlyQuote] appunto 
+\t\t\t\t{coin, coffee, tea}/(CTM|Customer)
+dalla semantica notiamo che il sistema in questo stato puo\[CloseCurlyQuote] \
+solo fare un\[CloseCurlyQuote]azione invisibile tau e arrivare in un altro \
+stato \t\t\t
+\t\t\t{coin, coffee, tea}/((:coffee.CTM+:tea.CTM)  |  coffee.0)
+questo e\[CloseCurlyQuote] lo stato in cui si trova il sistema dopo che il \
+cliente ha inserito una moneta nel distributore. Da questo stato abbiamo una \
+sola transizione etichettata tau nello stato  \t
+\t\t\t\t{coin, coffee, tea}/(CTM|0)
+nel quale il cliente ha preso il suo caffe\[CloseCurlyQuote] ed ha terminato \
+l\[CloseCurlyQuote]esecuzione mentre il distributore e\[CloseCurlyQuote] \
+ritornato nel suo stato iniziale.\t\t\t\
+\>", "Text",
+ CellChangeTimes->{{3.552562636213996*^9, 3.552562638579657*^9}, {
+   3.552563237530553*^9, 3.55256346764755*^9}, {3.552563587746108*^9, 
+   3.552563589436943*^9}, {3.5526504968530207`*^9, 3.552650512099636*^9}, 
+   3.552668277132326*^9, {3.554299587432765*^9, 3.554299620688931*^9}, {
+   3.554313706821557*^9, 3.554313707497122*^9}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "SlideShowNavigationBar",
+ CellTags->"SlideShowHeader"],
+
+Cell[CellGroupData[{
+
+Cell["References", "Section",
+ CellChangeTimes->{{3.503214264056941*^9, 3.50321426547047*^9}}],
+
+Cell[TextData[{
+ "[AIL07] L. Aceto, A. Ingolfsdottir, K. G. Larsen. ",
+ StyleBox["Reactive Systems. Modelling, Specification and Verification.",
+  FontSlant->"Italic"],
+ " Cambridge University Press 2007\n\nIl CCS e\[CloseCurlyQuote] trattato \
+anche nel corso MSC tenuto dal professor Roberto Gorrieri."
+}], "Text",
+ CellChangeTimes->{{3.503214266750304*^9, 3.50321431930282*^9}, {
+   3.503220097738888*^9, 3.503220214961404*^9}, {3.503319836242942*^9, 
+   3.503319864671665*^9}, {3.503322721007113*^9, 3.503322726891876*^9}, {
+   3.503401617806963*^9, 3.503401631619851*^9}, {3.503408130127722*^9, 
+   3.503408138326791*^9}, {3.50882529302083*^9, 3.508825369584572*^9}, {
+   3.508825412549388*^9, 3.508825457447353*^9}, {3.5437503681544533`*^9, 
+   3.5437503690850077`*^9}, {3.5440034924753428`*^9, 3.544003495706902*^9}, {
+   3.552370697332518*^9, 3.552370752025778*^9}, 3.552650581231142*^9}]
+}, Open  ]]
+}, Open  ]]
+},
+AutoGeneratedPackage->None,
+WindowToolbars->"EditBar",
+WindowSize->{1366, 744},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+ShowSelection->True,
+Magnification:>FEPrivate`If[
+  FEPrivate`Equal[FEPrivate`$VersionNumber, 6.], 2., 2. Inherited],
+TooltipBoxOptions->{TooltipDelay->Automatic},
+FrontEndVersion->"8.0 for Linux x86 (64-bit) (October 10, 2011)",
+StyleDefinitions->FrontEnd`FileName[{"Creative"}, "NaturalColor.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{
+ "SlideShowHeader"->{
+  Cell[1541, 45, 64, 1, 67, "SlideShowNavigationBar",
+   CellTags->"SlideShowHeader"],
+  Cell[3910, 102, 64, 1, 67, "SlideShowNavigationBar",
+   CellTags->"SlideShowHeader"],
+  Cell[60819, 1427, 64, 1, 67, "SlideShowNavigationBar",
+   CellTags->"SlideShowHeader"],
+  Cell[63010, 1477, 64, 1, 67, "SlideShowNavigationBar",
+   CellTags->"SlideShowHeader"],
+  Cell[82524, 1912, 64, 1, 67, "SlideShowNavigationBar",
+   CellTags->"SlideShowHeader"]}
+ }
+*)
+(*CellTagsIndex
+CellTagsIndex->{
+ {"SlideShowHeader", 84216, 1955}
+ }
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[567, 22, 315, 5, 139, "Title"],
+Cell[885, 29, 337, 5, 51, "Subtitle"],
+Cell[1225, 36, 279, 4, 50, "Subsubtitle"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1541, 45, 64, 1, 67, "SlideShowNavigationBar",
+ CellTags->"SlideShowHeader"],
+Cell[CellGroupData[{
+Cell[1630, 50, 266, 4, 156, "Section"],
+Cell[CellGroupData[{
+Cell[1921, 58, 125, 2, 77, "Subsection"],
+Cell[2049, 62, 1800, 33, 668, "Text"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3910, 102, 64, 1, 67, "SlideShowNavigationBar",
+ CellTags->"SlideShowHeader"],
+Cell[CellGroupData[{
+Cell[3999, 107, 134, 2, 156, "Section"],
+Cell[CellGroupData[{
+Cell[4158, 113, 249, 3, 77, "Subsection"],
+Cell[4410, 118, 4946, 79, 972, "Text"],
+Cell[9359, 199, 1181, 23, 440, "Text"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[10577, 227, 411, 5, 77, "Subsection"],
+Cell[10991, 234, 6015, 86, 555, "Text"],
+Cell[CellGroupData[{
+Cell[17031, 324, 265, 7, 162, "Item"],
+Cell[17299, 333, 507, 10, 129, "Item"]
+}, Open  ]],
+Cell[17821, 346, 1848, 48, 105, "Output"],
+Cell[19672, 396, 249, 6, 98, "Text"],
+Cell[19924, 404, 507, 11, 129, "Item"],
+Cell[20434, 417, 1878, 50, 105, "Output"],
+Cell[22315, 469, 144, 4, 98, "Text"],
+Cell[22462, 475, 1217, 25, 340, "Item"],
+Cell[23682, 502, 6330, 156, 755, "Output"],
+Cell[30015, 660, 1027, 22, 272, "Item"],
+Cell[31045, 684, 10827, 270, 377, "Output"],
+Cell[41875, 956, 2455, 77, 376, "Item"],
+Cell[44333, 1035, 3283, 78, 105, "Output"],
+Cell[47619, 1115, 424, 8, 212, "Text"],
+Cell[48046, 1125, 3927, 92, 105, "Output"],
+Cell[51976, 1219, 821, 16, 231, "Item"],
+Cell[52800, 1237, 4302, 95, 105, "Output"],
+Cell[57105, 1334, 528, 9, 128, "Item"],
+Cell[57636, 1345, 3122, 75, 123, "Output"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[60819, 1427, 64, 1, 67, "SlideShowNavigationBar",
+ CellTags->"SlideShowHeader"],
+Cell[CellGroupData[{
+Cell[60908, 1432, 106, 1, 156, "Section"],
+Cell[CellGroupData[{
+Cell[61039, 1437, 208, 3, 77, "Subsection"],
+Cell[61250, 1442, 1699, 28, 288, "Text"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[63010, 1477, 64, 1, 67, "SlideShowNavigationBar",
+ CellTags->"SlideShowHeader"],
+Cell[CellGroupData[{
+Cell[63099, 1482, 182, 2, 156, "Section"],
+Cell[63284, 1486, 1345, 23, 478, "Text"],
+Cell[CellGroupData[{
+Cell[64654, 1513, 1477, 27, 450, "Input"],
+Cell[66134, 1542, 5106, 115, 140, "Output"]
+}, Open  ]],
+Cell[71255, 1660, 717, 14, 212, "Text"],
+Cell[CellGroupData[{
+Cell[71997, 1678, 867, 16, 376, "Input"],
+Cell[72867, 1696, 2468, 59, 334, "Output"]
+}, Open  ]],
+Cell[75350, 1758, 504, 10, 174, "Text"],
+Cell[CellGroupData[{
+Cell[75879, 1772, 1515, 25, 376, "Input"],
+Cell[77397, 1799, 3935, 85, 591, "Output"]
+}, Open  ]],
+Cell[81347, 1887, 1128, 19, 402, "Text"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[82524, 1912, 64, 1, 67, "SlideShowNavigationBar",
+ CellTags->"SlideShowHeader"],
+Cell[CellGroupData[{
+Cell[82613, 1917, 94, 1, 156, "Section"],
+Cell[82710, 1920, 896, 14, 174, "Text"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
